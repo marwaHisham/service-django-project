@@ -1,0 +1,174 @@
+
+{% extends 'base.html' %}
+{% block content %}
+<!--=========Header Menu Area =================-->
+  
+  <main class="site-main">
+    <!--================Hero Banner start =================-->  
+    <section class="mb-30px">
+      <div class="container">
+        <div class="hero-banner">
+          <div class="hero-banner__content">
+            <h3>Tours & Travels</h3>
+            <h1>Amazing Places on earth</h1>
+            <h4>December 12, 2018</h4>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--================Hero Banner end =================-->  
+
+    <!--================ Blog slider start =================-->  
+    <section>
+      <div class="container">
+        <div class="owl-carousel owl-theme blog-slider">
+            {% for obj in obj %}
+       
+          <div class="card blog__slide text-center">
+              
+            <div class="blog__slide__img">
+              <img class="card-img rounded-0" src="{{ obj.image.url }}" alt="">
+            </div>
+            <div class="blog__slide__content">
+              <a class="blog__slide__label" href="../blog-detail/{{ obj.id  }}">{{ obj.category }}</a>
+              <h3><a href="../blog-detail/{{ obj.id  }}">{{ obj.content|truncatewords:20 }}</a></h3>
+              <p>2 days ago</p>
+            </div>
+           
+          </div> 
+          {% endfor %}  
+        </div>
+      </div>
+    </section>
+    <!--================ Blog slider end =================-->  
+
+    <!--================ Start Blog Post Area =================-->
+    <section class="blog-post-area section-margin mt-4">
+      <div class="container">
+        <div class="row">
+           
+          <div class="col-lg-8">
+              {% for contacts in contacts %}
+
+            <div class="single-recent-blog-post">
+              <div class="thumb">
+                
+                <img class="img-fluid" src="{{ contacts.image.url  }}" alt="">
+                <ul class="thumb-info">
+                  <li><a href="#"><i class="ti-user">{{ contacts.user }}</i></a></li>
+                  <li><a href="#"><i class="ti-notepad"></i>{{ contacts.publish }}</a></li>
+                  <li><a href="#"><i class="ti-themify-favicon"></i>{{ contacts.comments.count }}</a></li>
+                </ul>
+              </div>
+              <div class="details mt-20">
+                <a href="blog-single.html">
+                  <h3>{{ contacts.count }}</h3>
+                </a>
+                <a class="button" href="/posts/blog-detail/{{ contacts.id }}">Read More <i class="ti-arrow-right"></i></a>
+              </div>
+            </div>
+            {% endfor %}
+           
+            
+            <div class="row">
+                <div class="col-lg-12">
+                    <nav class="blog-pagination justify-content-center d-flex">
+                        <ul class="pagination">
+                            {% if obj.has_previous %}
+                            <li class="page-item">                       
+                                <a href="?page={{ obj.previous_page_number }}
+                                {% if request.Get.q %}& q={{ request.GET.q }} {% endif %}" class="page-link" aria-label="Previous">
+                                    <span aria-hidden="true">
+                                        <i class="ti-angle-left"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            {% endif %}
+                            <li class="page-item active"><a href="{{ obj.number }}" class="page-link">1</a></li>
+                            {% if obj.has_next %}
+                            <li class="page-item">
+                                <a href="?page={{ obj.next_page_number }}{% if request.Get.q %}& q={{ request.GET.q }} {% endif %}" class="page-link" aria-label="Next">
+                                    <span aria-hidden="true">
+                                        <i class="ti-angle-right"></i>
+                                    </span>
+                                </a>
+                            </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
+              </div>
+            </div>
+
+          <!-- Start Blog Post Siddebar -->
+          <div class="col-lg-4 sidebar-widgets">
+              <div class="widget-wrap">
+                
+
+                  <div class="single-sidebar-widget post-category-widget">
+                      <h4 class="single-sidebar-widget__title">Catgory</h4>
+                      <ul class="cat-list mt-20">
+                          {% for post_count in post_count %}   
+                        <li>
+                          <a href="#" class="d-flex justify-content-between">
+                              <p>{{ post_count.name }}</p>
+                       
+                              <p>({{ post_count.posts_count  }})</p>
+                          </a>
+                        </li>
+                      {% endfor %}
+                      </ul>
+                    </div>
+
+               
+              <div class="single-sidebar-widget popular-post-widget">
+                  <h4 class="single-sidebar-widget__title">Popular Post</h4>
+                  <div class="popular-post-list">
+                      {% for i in posts %}
+                      <div class="single-post-list">
+                        <div class="thumb">
+                          <img class="card-img rounded-0" src="{{ i.image.url }}" alt="">
+                          
+                          <ul class="thumb-info">
+                            <li><a href="#">{{ i.user }}</a></li>
+                            <li><a href="#">{{ i.timestamp.date }}</a></li>
+                          </ul>
+                        </div>
+                        <div class="details mt-20">
+                          <a href="blog-single.html">
+                            <h6>{{ i.title }}</h6>
+                          </a>
+                        </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    <div class="single-post-list">
+                     
+                      
+                        
+                    </div>
+                  </div>
+                </div>
+  
+                  <div class="single-sidebar-widget tag_cloud_widget">
+                    <h4 class="single-sidebar-widget__title">Popular Post</h4>
+                    <ul class="list">
+                        {% for obj in obj %}
+                       
+                        <li>
+                            <a href="../blog-detail/{{ obj.id }}"> {{ obj.uniquewords }}</a>
+                        </li>
+                        
+                      {% endfor %}
+                      
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <!-- End Blog Post Siddebar -->
+        </div>
+    </section>
+    <!--================ End Blog Post Area =================-->
+  
+    {% endblock %}

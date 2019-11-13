@@ -1,0 +1,260 @@
+{% extends 'base.html' %}
+{% block content %}
+  
+  
+  <!--================ Hero sm Banner start =================-->      
+  <section class="mb-30px">
+    <div class="container">
+      <div class="hero-banner hero-banner--sm">
+        <div class="hero-banner__content">
+          <h1>Blog details</h1>
+          <nav aria-label="breadcrumb" class="banner-breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Blog Details</li>
+            </ol>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!--================ Hero sm Banner end =================-->    
+
+
+  
+
+  <!--================ Start Blog Post Area =================-->
+  <section class="blog-post-area section-margin">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-">
+            <div class="main_blog_details">
+                <img class="img-fluid" src="{{ obj.image.url }}" alt="">
+                <a href="#"><h4>{{ obj.title }}<br /> </h4></a>
+                <div class="user_details">
+                  <div class="float-left">
+                    <a href="#">{{ obj.category }}</a>
+                   
+                  </div>
+                  <div class="float-right mt-sm-0 mt-3">
+                    <div class="media">
+                      <div class="media-body">
+                        <h5>{{ obj.user }}</h5>
+                        <p>{{ obj.publish }}</p>
+                      </div>
+                      <div class="d-flex">
+                        <img width="42" height="42" src="{{ obj.user.userprofile.avatar.url }}" alt="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <p>{{ obj.content|truncatewords:50 }}</p>
+           <blockquote class="blockquote">
+             <p class="mb-0">{{ obj.qoute }} </p>
+
+             </blockquote>
+           <p>{{ obj.content|truncatewords:-50 }}</p>
+             <div class="news_d_footer flex-column flex-sm-row">
+                <a href="/blog-detail/{{  obj.id }}"  class="btn btn-default btn-sm btn-favorite" role="button"><span class=" glyphicon glyphicon-star {% if data.is_favorite %}active{% endif %}" action=""><i class="ti-heart"></i></a>{% with u=user_fav|first  %} {{ u.user }}{% endwith %} and {{ user_fav.count|add:-1 }} liked this post   &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp;     
+                  <i class="ti-themify-favicon">{% if comments.count > 0 %} 
+                      {{ comments.count }} comments
+                       {% endif %}</i> &nbsp;&nbsp; 
+                 <div class="news_socail ml-sm-auto mt-sm-0 mt-2">
+               <a href="http://www.facebook.com"><i class="fab fa-facebook-f"></i></a>
+               <a href="http://www.twitter.com"><i class="fab fa-twitter"></i></a>
+               <a href="http://www.behance.com"><i class="fab fa-behance"></i></a>
+             </div>
+               </div>
+              </div>
+          
+
+          <div class="navigation-area">
+                  <div class="row">
+                      <div class="col-lg- col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+                          <div class="thumb">
+                              <a href="#"><img style="width:50px;height:50px;" class="img-fluid" src="{{ prev.user.userprofile.avatar.url }}" alt=""></a>
+                          </div>
+                          <div class="arrow">
+                              <a href="#"><span class="lnr text-white lnr-arrow-left"></span></a>
+                          </div>
+                          <div class="detials">
+                              <p>Prev Post</p>
+                              <a href="{{ prev.id }}"><h4>{{ prev.title|truncatewords:2 }}...</h4></a>
+                          </div>
+                      </div>
+                      <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                          <div class="detials">
+                              <p>Next Post</p>
+                              <a href="{{ next.id }}"><h4>{{ next.title|truncatewords:2 }}...</h4></a>
+                          </div>
+                          <div class="arrow">
+                              <a href="#"><span class="lnr text-white lnr-arrow-right"></span></a>
+                          </div>
+                          <div class="thumb">
+                              <a href="#"><img style="width:50px;height:50px;" class="img-fluid" src="{{ next.user.userprofile.avatar.url }}"  alt=""></a>
+                          </div>										
+                      </div>									
+                  </div>
+                </div>
+               
+                <div class="comments-area ">
+                    
+                    <h4>{% if comments.count > 0 %} 
+                        {{ comments.count }} comments
+                        {% else %} 
+                        0 comments
+                         {% endif %}</h4> 
+                    {% for i in comments  %}
+                   
+                    
+                    <div class="comment-list">
+                        <div class="single-comment justify-content-between d-flex">
+                            <div class="user justify-content-between d-flex">
+                                <div class="thumb">
+                                    <img style="width:40px; hieght:100px;" src="{{ i.user.userprofile.avatar.url }}" alt="">
+                                </div>
+                                <div class="desc">
+                                    <h5><a href="#">{{ i.user }}</a></h5>
+                                    <p class="date">{{ i.timestamp }} </p>
+                                    <p class="comment">
+                                        {{ i.content }}
+                                    </p>
+                                </div>
+                               
+                            </div>
+                            
+                        </div>
+                     
+                        <div class="reply-btn comment-reply-btn"style=width:70px;>
+                            <a href="" class="btn-reply text-uppercase" >reply</a> 
+                        </div>              
+                  <div class="comment-reply" >
+                    {% for child in i.children %}
+                    <div class="comment-list left-padding "  >
+                        <div class="single-comment justify-content-between d-flex">
+                            <div class="user justify-content-between d-flex">
+                                <div class="thumb">
+                                  <img style="width:40px; hieght:100px;" src="{{ child.user.userprofile.avatar.url }}" alt="">
+                                </div>
+                                <div class="desc">
+                                    <h5><a href="#">{{ child.user }}</a></h5>
+                                    <p class="date">{{ child.timestamp }} </p>
+                                    <p class="comment">
+                                       {{ child.content }}
+                                    </p>
+                                </div>
+                                
+                            </div>
+                            
+                        </div>
+                       
+                    </div>
+                    {% endfor %} 
+                  
+                    <div  class=" comment-form  ">
+                        <form method="POST" enctype="multipart/form-data">
+                            {% csrf_token %} 
+                            <input type='hidden' name='parent_id' value='{{ i.id }}'>                       
+                              <div class="form-group "> 
+                                {{ comment_form }}
+                                <input type="submit" value="post reply"  class="button submit_btn">
+                              </div>
+                          </form>
+                        
+                  </div>
+                  
+                  </div>
+                  {% endfor %}  				
+                </div>
+              
+                <div  class="comment-form">
+                    <form method="POST" enctype="multipart/form-data">
+                        {% csrf_token %} 
+                        <input type='hidden' name='parent_id' value=''>                       
+                          <div class="form-group"> 
+                            {{ comment_form }}
+                            <input type="submit" value="send"  class="button submit_btn">
+                          </div>
+                      </form>
+                 
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+              
+        
+             
+ <!-- Start Blog Post Siddebar -->
+ <div class="col-lg-12 sidebar-widgets">
+  <div class="widget-wrap">
+    
+
+
+    <div class="single-sidebar-widget post-category-widget">
+      <h4 class="single-sidebar-widget__title">Catgory</h4>
+      
+      <ul class="cat-list mt-20">
+          {% for post_count in post_count %}   
+        <li>
+          <a href="#" class="d-flex justify-content-between">
+            <p>{{ post_count.name }}</p>
+                 
+            <p>({{ post_count.posts_count  }})</p>
+            
+          </a>
+          {% endfor %}
+        </li>
+          
+        
+      </ul>
+    </div>
+
+    <div class="single-sidebar-widget popular-post-widget">
+      <h4 class="single-sidebar-widget__title">Popular Post</h4>
+      <div class="popular-post-list">
+          {% for i in posts %}
+        <div class="single-post-list">
+          <div class="thumb">
+            <img class="card-img rounded-0" style="width:500px; height:100px " src="{{ i.image.url }}" alt="">
+            
+            <ul class="thumb-info">
+              <li><a href="#">{{ i.user }}</a></li>
+              <li><a href="#">{{ i.timestamp.date }}</a></li>
+            </ul>
+          </div>
+          <div class="details mt-20">
+            <a href="blog-single.html">
+              <h6>{{ i.title }}</h6>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        </div>
+        
+      </div>
+    </div>
+
+      <div class="single-sidebar-widget tag_cloud_widget">
+        <h4 class="single-sidebar-widget__title">Popular Post</h4>
+       
+        
+        <ul class="list">
+          <li>
+              <a href="#"> {{ obj.uniquewords }}</a>
+          </li>
+          
+        </ul>
+        
+      </div>
+    </div>
+  </div>
+</div>
+<!-- End Blog Post Siddebar -->
+</div>
+</section>
+
+  <!--================ End Blog Post Area =================-->
+{% endblock %}
+</div>
